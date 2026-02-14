@@ -4,15 +4,23 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 // Add DbContext registration with your connection string
 builder.Services.AddDbContext<CustomerProfileContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddControllers();
+// Changed from AddControllers() to AddControllersWithViews() 
+builder.Services.AddControllersWithViews();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Register HTTP client for Maintenance API
+builder.Services.AddHttpClient("MaintenanceApi", (sp, client) =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    client.BaseAddress = new Uri(config["MaintenanceApi:BaseUrl"]!);
+});
 
 var app = builder.Build();
 
@@ -25,6 +33,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthorization();
 
-app.MapControllers();
+// Changed from MapControllers() to MapControllerRoute
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
