@@ -28,7 +28,7 @@ jobs:
         run: dotnet build Maintenance.WebAPI/Maintenance.WebAPI.csproj --configuration Release --no-restore
 
       - name: Publish
-        run: dotnet publish Maintenance.WebAPI/Maintenance.WebAPI.csproj -c Release -o publish
+        run: dotnet publish Maintenance.WebAPI/Maintenance.WebAPI.csproj -c Release -r linux-x64 --self-contained false -o publish
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
@@ -36,3 +36,4 @@ jobs:
           app-name: 'maintenance-webapi-8824576'
           package: publish
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_626908BC296D472D8E75F8E56C79590D }}
+
