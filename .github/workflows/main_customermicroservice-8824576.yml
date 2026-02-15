@@ -1,4 +1,4 @@
-name: Build and deploy ASP.Net Core app to Azure Web App - customermicroservice-ty2026
+name: Build and deploy ASP.Net Core app to Azure Web App - customermicroservice-8824576
 
 on:
   push:
